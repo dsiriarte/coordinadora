@@ -19,8 +19,8 @@ Se encuentra en el directorio raiz coordinadora-app.apk
 
 # Videos explicacion
 
-Arquitectura : https://www.loom.com/share/c5b8e52cc59e4db5a5740f4478128286
-Demo app: https://www.loom.com/share/de26d1fb2852429c86b814d9de20b476
+- Arquitectura : https://www.loom.com/share/c5b8e52cc59e4db5a5740f4478128286
+- Demo app: https://www.loom.com/share/de26d1fb2852429c86b814d9de20b476
 
 
 # Algunas consideraciones finales

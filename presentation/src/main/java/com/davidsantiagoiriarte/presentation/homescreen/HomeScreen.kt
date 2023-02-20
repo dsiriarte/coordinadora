@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -91,6 +92,7 @@ fun BarraFiltros(enviosEncontrados: Int, onSortClicked: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
     onSearchClicked: (searchQuery: String) -> Unit
@@ -98,7 +100,7 @@ fun SearchBar(
     var text by remember {
         mutableStateOf(TextFieldValue(""))
     }
-    val localFocusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     Column {
         Text(
             text = "Buscar envios",
@@ -115,6 +117,7 @@ fun SearchBar(
             },
             trailingIcon = {
                 IconButton(onClick = {
+                    keyboardController?.hide()
                     onSearchClicked(text.text)
                 }) {
                     Icon(Icons.Default.Search, contentDescription = null)
@@ -126,9 +129,12 @@ fun SearchBar(
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = MaterialTheme.colors.surface
             ),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
-                onDone = { localFocusManager.clearFocus() }
+                onSearch = {
+                    keyboardController?.hide()
+                    onSearchClicked(text.text)
+                }
             ),
             modifier = Modifier
                 .heightIn(min = 56.dp)
@@ -181,7 +187,7 @@ fun Item(guia: ViewGuia) {
             }
             Column(
                 modifier = Modifier
-                    .background(Color.LightGray)
+                    .background(itemBackground)
                     .weight(2f)
                     .fillMaxHeight()
             ) {
@@ -192,7 +198,7 @@ fun Item(guia: ViewGuia) {
                     Text(
                         text = guia.fechaEnvio,
                         modifier = Modifier
-                            .background(Color.Gray)
+                            .background(fechaBackground)
                             .padding(4.dp),
                         textAlign = TextAlign.Right
                     )
@@ -214,7 +220,7 @@ fun Item(guia: ViewGuia) {
         Spacer(modifier = Modifier.height(2.dp))
         Row(
             modifier = Modifier
-                .background(Color.LightGray)
+                .background(itemBackground)
                 .fillMaxWidth()
         ) {
             Text(

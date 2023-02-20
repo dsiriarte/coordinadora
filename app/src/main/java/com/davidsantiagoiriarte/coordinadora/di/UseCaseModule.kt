@@ -2,6 +2,7 @@ package com.davidsantiagoiriarte.coordinadora.di
 
 import com.davidsantiagoiriarte.domain.model.Guia
 import com.davidsantiagoiriarte.domain.repository.GuiasRepository
+import com.davidsantiagoiriarte.domain.usecases.BuscarGuiaUseCase
 import com.davidsantiagoiriarte.domain.usecases.BuscarGuiasClienteUseCase
 import com.davidsantiagoiriarte.domain.usecases.SincronizarGuiasUseCase
 import com.davidsantiagoiriarte.domain.usecases.UseCase
@@ -26,5 +27,11 @@ class UseCaseModule {
     @Singleton
     fun provideBuscarGuiasClienteUseCase(guiasRepository: GuiasRepository): UseCase<String, Flow<List<Guia>>> {
         return BuscarGuiasClienteUseCase(guiasRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBuscarGuiaUseCase(guiasRepository: GuiasRepository): UseCase<String, Guia> {
+        return BuscarGuiaUseCase(guiasRepository)
     }
 }

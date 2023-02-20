@@ -6,8 +6,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Relation
 
 data class DBGuiaConUnidades(
-    @Embedded val guia : DBGuia,
-    val ubicacion_guia_lng: Double? = null,
+    @Embedded val guia: DBGuia,
     @Relation(
         parentColumn = "guia",
         entityColumn = "guia"
@@ -51,9 +50,9 @@ data class DBZonificacion(
 
 @Entity
 data class DBUnidad(
-    val etiqueta1d: String,
+    @PrimaryKey val etiqueta1d: String,
     val etiqueta2d: String,
     val guia: String,
-    @PrimaryKey val numero_unidad: Int,
+    val numero_unidad: Int,
     val referencia_detalle: String
 )

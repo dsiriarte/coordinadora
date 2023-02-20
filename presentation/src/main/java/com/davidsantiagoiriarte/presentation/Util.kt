@@ -1,6 +1,7 @@
 package com.davidsantiagoiriarte.presentation
 
 import com.davidsantiagoiriarte.domain.model.Destinatario
+import com.davidsantiagoiriarte.domain.model.Unidad
 import com.davidsantiagoiriarte.domain.model.Zonificacion
 import com.davidsantiagoiriarte.presentation.model.ViewGuia
 import com.davidsantiagoiriarte.presentation.ui.theme.enNySColor
@@ -117,4 +118,29 @@ val fakeGuias = listOf(
         null,
         listOf()
     )
+)
+
+val fakeDestinatario = Destinatario(
+    "DIANA BERENISE ORTEGA",
+    "123",
+    "",
+    Zonificacion(
+        "Ibague",
+        "1",
+        "",
+        "Cra 1",
+        "",
+        null,
+        null,
+        "",
+        "73"
+    )
+)
+
+val fakeUnidad = Unidad(
+    "701860068473001",
+    "7001001200002100001860068473001",
+    "01860055432",
+    1,
+    "01860068473.1"
 )

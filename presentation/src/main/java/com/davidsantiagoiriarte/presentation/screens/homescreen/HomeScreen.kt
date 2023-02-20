@@ -1,7 +1,8 @@
-package com.davidsantiagoiriarte.presentation.homescreen
+package com.davidsantiagoiriarte.presentation.screens.homescreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,13 +28,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.davidsantiagoiriarte.presentation.R
 import com.davidsantiagoiriarte.presentation.fakeGuias
 import com.davidsantiagoiriarte.presentation.model.ViewGuia
+import com.davidsantiagoiriarte.presentation.navigation.Screen
+import com.davidsantiagoiriarte.presentation.screens.CoordinadoraTopHeader
 import com.davidsantiagoiriarte.presentation.ui.theme.*
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
     val guias by viewModel.guias.collectAsState()
     Column {
         Header()
@@ -43,24 +47,18 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             }
             Divider()
             BarraFiltros(enviosEncontrados = guias.size) { viewModel.ordenarListaPorFecha() }
-            ItemList(guias)
+            ItemList(guias){
+                navController.navigate("${Screen.GuiaScreen.route}/$it")
+            }
         }
     }
 }
 
+
 @Composable
 fun Header() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Card(elevation = 4.dp, modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()) {
-            Image(
-                painter = painterResource(id = R.drawable.logo_coordinadora),
-                contentDescription = null,
-                contentScale = ContentScale.Inside,
-                modifier = Modifier.padding(4.dp)
-            )
-        }
+        CoordinadoraTopHeader()
         Text(
             text = stringResource(id = R.string.titulo),
             style = MaterialTheme.typography.h5,
@@ -154,20 +152,22 @@ fun SearchBar(
 }
 
 @Composable
-fun ItemList(guias: List<ViewGuia>) {
+fun ItemList(guias: List<ViewGuia>, onItemClicked : (numeroGuia : String)->Unit) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         items(guias) { guia ->
-            Item(guia)
+            Item(guia,onItemClicked)
         }
     }
 }
 
 @Composable
-fun Item(guia: ViewGuia) {
-    Column {
+fun Item(guia: ViewGuia, onItemClicked : (numeroGuia : String)->Unit) {
+    Column(modifier = Modifier.clickable {
+        onItemClicked(guia.guia)
+    }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -241,13 +241,5 @@ fun Item(guia: ViewGuia) {
                 modifier = Modifier.padding(start = 4.dp)
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    CoordinadoraTheme {
-        HomeScreen()
     }
 }

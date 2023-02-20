@@ -1,4 +1,4 @@
-package com.davidsantiagoiriarte.presentation.homescreen
+package com.davidsantiagoiriarte.presentation.screens.homescreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,12 +21,17 @@ class HomeViewModel @Inject constructor(
     val guias: StateFlow<List<ViewGuia>> = _guias.asStateFlow()
 
     init {
+        sincronizar()
+    }
+
+   private fun sincronizar() {
         viewModelScope.launch {
             sincronizarGuiasUseCase.execute(Unit)
         }
     }
 
     fun buscarGuiasCliente(identificacion: String) {
+        sincronizar()
         viewModelScope.launch {
             buscarGuiasClienteUseCase.execute(identificacion).collectLatest { guias ->
                 _guias.value = guias.map { it.map() }

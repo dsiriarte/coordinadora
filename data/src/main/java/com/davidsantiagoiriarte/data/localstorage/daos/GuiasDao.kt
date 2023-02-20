@@ -17,4 +17,7 @@ interface GuiasDao {
     @Query("SELECT * FROM DBGuia WHERE identificacion_cliente = :identificacionCliente")
     fun buscarGuiasCliente(identificacionCliente: String): Flow<List<DBGuiaConUnidades>>
 
+
+    @Query("SELECT * FROM DBGuia WHERE guia = :numeroGuia")
+    suspend fun buscarGuia(numeroGuia: String): DBGuiaConUnidades
 }

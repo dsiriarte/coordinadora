@@ -34,11 +34,19 @@ import com.davidsantiagoiriarte.presentation.fakeGuias
 import com.davidsantiagoiriarte.presentation.model.ViewGuia
 import com.davidsantiagoiriarte.presentation.navigation.Screen
 import com.davidsantiagoiriarte.presentation.screens.CoordinadoraTopHeader
+import com.davidsantiagoiriarte.presentation.screens.ErrorMessage
 import com.davidsantiagoiriarte.presentation.ui.theme.*
 
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
     val guias by viewModel.guias.collectAsState()
+    val mostrarMensajeError by viewModel.mostrarError.collectAsState()
+    val mensajeError by viewModel.mensajeError.collectAsState()
+    if (mostrarMensajeError) {
+        ErrorMessage(errorMessage = mensajeError) {
+            viewModel.mostrarError.value = false
+        }
+    }
     Column {
         Header()
         Column {
@@ -46,8 +54,11 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                 viewModel.buscarGuiasCliente(it)
             }
             Divider()
-            BarraFiltros(enviosEncontrados = guias.size) { viewModel.ordenarListaPorFecha() }
-            ItemList(guias){
+            BarraFiltros(
+                guias,
+                { viewModel.ordenarListaPorFecha() },
+                { viewModel.filtrarPorEstado(it) })
+            ItemList(guias) {
                 navController.navigate("${Screen.GuiaScreen.route}/$it")
             }
         }
@@ -76,7 +87,14 @@ fun Header() {
 }
 
 @Composable
-fun BarraFiltros(enviosEncontrados: Int, onSortClicked: () -> Unit) {
+fun BarraFiltros(
+    guias: List<ViewGuia>,
+    onSortClicked: () -> Unit,
+    onFilterClicked: (estado: String?) -> Unit
+) {
+    var openFilterDialog by remember {
+        mutableStateOf(false)
+    }
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -85,17 +103,65 @@ fun BarraFiltros(enviosEncontrados: Int, onSortClicked: () -> Unit) {
             .fillMaxWidth()
     ) {
         Text(
-            text = "${stringResource(id = R.string.envios_encontrados)} ($enviosEncontrados)",
+            text = "${stringResource(id = R.string.envios_encontrados)} (${guias.size})",
             textAlign = TextAlign.Start,
         )
         Row() {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { openFilterDialog = true }) {
                 Icon(painter = painterResource(id = R.drawable.filter), contentDescription = null)
             }
             IconButton(onClick = { onSortClicked() }) {
                 Icon(painter = painterResource(id = R.drawable.sort), contentDescription = null)
             }
         }
+    }
+
+    val estados = guias.distinctBy { it.estadoGuia }.map { Pair(it.estadoGuia, it.colorBackground) }
+
+    if (openFilterDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                // Dismiss the dialog when the user clicks outside the dialog or on the back
+                // button. If you want to disable that functionality, simply use an empty
+                // onCloseRequest.
+                openFilterDialog = false
+            },
+            title = {
+                Text(text = "Selecciona un filtro")
+            },
+            text = {
+                Column {
+                    estados.forEach {
+                        Button(
+                            onClick = {
+                                onFilterClicked(it.first)
+                                openFilterDialog = false
+                            },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = it.second)
+                        ) {
+                            Text(text = it.first)
+                        }
+                    }
+                    Button(
+                        onClick = {
+                            onFilterClicked(null)
+                            openFilterDialog = false
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)
+                    ) {
+                        Text(text = "Borrar filtros")
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        openFilterDialog = false
+                    }) {
+                    Text("Cerrar")
+                }
+            }
+        )
     }
 }
 
@@ -152,19 +218,19 @@ fun SearchBar(
 }
 
 @Composable
-fun ItemList(guias: List<ViewGuia>, onItemClicked : (numeroGuia : String)->Unit) {
+fun ItemList(guias: List<ViewGuia>, onItemClicked: (numeroGuia: String) -> Unit) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         items(guias) { guia ->
-            Item(guia,onItemClicked)
+            Item(guia, onItemClicked)
         }
     }
 }
 
 @Composable
-fun Item(guia: ViewGuia, onItemClicked : (numeroGuia : String)->Unit) {
+fun Item(guia: ViewGuia, onItemClicked: (numeroGuia: String) -> Unit) {
     Column(modifier = Modifier.clickable {
         onItemClicked(guia.guia)
     }) {

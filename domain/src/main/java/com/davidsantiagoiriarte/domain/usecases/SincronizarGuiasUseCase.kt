@@ -4,7 +4,7 @@ import com.davidsantiagoiriarte.domain.repository.GuiasRepository
 
 class SincronizarGuiasUseCase(
     private val guiasRepository: GuiasRepository
-) : UseCase<Unit, Unit> {
+) : SuspendUseCase<Unit, Unit> {
 
     override suspend fun execute(p: Unit) {
         guiasRepository.sincronizarGuias()

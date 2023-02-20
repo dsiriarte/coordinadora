@@ -25,8 +25,8 @@ class GuiasRepositoryImpl(
         }
     }
 
-    override suspend fun buscarGuiasCliente(identificacionCliente: String): Flow<List<Guia>> {
-        return guiasDao.buscarGuiasCliente(identificacionCliente)
+    override fun buscarGuiasCliente(identificacionCliente: String): Flow<List<Guia>> {
+        return guiasDao.getGuiaDistinctUntilChanged(identificacionCliente)
             .map { dbGuia -> dbGuia.map { it.map() } }
     }
 

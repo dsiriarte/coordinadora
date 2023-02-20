@@ -1,19 +1,19 @@
 package com.davidsantiagoiriarte.data.localstorage
 
 import androidx.room.Database
-import com.davidsantiagoiriarte.data.localstorage.daos.ClientesDao
+import androidx.room.RoomDatabase
+import com.davidsantiagoiriarte.data.localstorage.daos.GuiasDao
+import com.davidsantiagoiriarte.data.localstorage.daos.UnidadesDao
 import com.davidsantiagoiriarte.data.localstorage.entities.*
 
 @Database(
     entities = [
-        DBCliente::class,
         DBGuia::class,
-        DBDestinatario::class,
-        DBZonificacion::class,
         DBUnidad::class
     ],
     version = 1
 )
-abstract class LocalDB {
-    abstract fun clientesDao(): ClientesDao
+abstract class LocalDB : RoomDatabase() {
+    abstract fun guiasDao(): GuiasDao
+    abstract fun unidadesDao(): UnidadesDao
 }

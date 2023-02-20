@@ -14,7 +14,7 @@ data class APIGuia(
     val fecha_envio: String,
     val guia: String,
     val total_unidades: Int,
-    val ubicacion_guia: List<Double>,
+    val ubicacion_guia: List<Double>?,
     val unidades: List<APIUnidad>,
     val novedad: String? = null,
     val fecha_novedad: String? = null

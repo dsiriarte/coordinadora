@@ -2,23 +2,15 @@ package com.davidsantiagoiriarte.data.network
 
 import com.davidsantiagoiriarte.data.localstorage.entities.*
 
-fun APIClientes.map(): List<DBCliente> {
-    return clientes.map {
-        DBCliente(
-            it.key,
-            it.value.guias.map { guia -> guia.map() }
-        )
-    }
-}
-
-fun APIGuia.map() = DBGuia(
+fun APIGuia.map(identificacionCliente: String) = DBGuia(
+    identificacionCliente,
     destinatario.map(),
     estado_guia,
     fecha_envio,
     guia,
     total_unidades,
-    ubicacion_guia,
-    unidades.map { it.map() },
+    ubicacion_guia?.getOrNull(0),
+    ubicacion_guia?.getOrNull(1),
     novedad,
     fecha_novedad
 )

@@ -2,7 +2,7 @@ package com.davidsantiagoiriarte.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val enRepartoColor = Color(0xFF223D78)
+val enNySColor = Color(0xFFDA5150)
+val enTerminalColor = Color(0xFFE98F02)
+val entregadaColor = Color(0xFFA3B10A)

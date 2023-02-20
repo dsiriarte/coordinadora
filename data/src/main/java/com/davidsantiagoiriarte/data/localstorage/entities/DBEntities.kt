@@ -1,36 +1,42 @@
 package com.davidsantiagoiriarte.data.localstorage.entities
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 
-@Entity
-data class DBCliente(
-    @PrimaryKey val identificacion: String,
-    val guias: List<DBGuia>
+data class DBGuiaConUnidades(
+    @Embedded val guia : DBGuia,
+    val ubicacion_guia_lng: Double? = null,
+    @Relation(
+        parentColumn = "guia",
+        entityColumn = "guia"
+    )
+    val unidades: List<DBUnidad>
 )
 
 @Entity
 data class DBGuia(
-    val destinatario: DBDestinatario,
+    val identificacion_cliente: String,
+    @Embedded val destinatario: DBDestinatario,
     val estado_guia: String,
     val fecha_envio: String,
-    val guia: String,
+    @PrimaryKey val guia: String,
     val total_unidades: Int,
-    val ubicacion_guia: List<Double>? = null,
-    val unidades: List<DBUnidad>,
+    val ubicacion_lat: Double? = null,
+    val ubicacion_lng: Double? = null,
     val novedad: String? = null,
     val fecha_novedad: String? = null
 )
 
-@Entity
+
 data class DBDestinatario(
     val nombre: String,
     val telefono: String,
     val tipo_poblacion_destino: String,
-    val zonificacion: DBZonificacion
+    @Embedded val zonificacion: DBZonificacion
 )
 
-@Entity
 data class DBZonificacion(
     val ciudad: String,
     val codigo_terminal: String,
@@ -48,6 +54,6 @@ data class DBUnidad(
     val etiqueta1d: String,
     val etiqueta2d: String,
     val guia: String,
-    val numero_unidad: Int,
+    @PrimaryKey val numero_unidad: Int,
     val referencia_detalle: String
 )

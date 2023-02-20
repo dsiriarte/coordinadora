@@ -2,20 +2,31 @@ package com.davidsantiagoiriarte.data.localstorage
 
 import com.davidsantiagoiriarte.data.localstorage.entities.*
 import com.davidsantiagoiriarte.domain.model.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-fun DBCliente.map() = Cliente(
-    identificacion,
-    guias.map { it.map() }
+fun DBGuiaConUnidades.map() = Guia(
+    guia.destinatario.map(),
+    guia.estado_guia,
+    guia.fecha_envio,
+    guia.guia,
+    guia.total_unidades,
+    guia.ubicacion_lat,
+    guia.ubicacion_lng,
+    unidades.map { it.map() },
+    guia.novedad,
+    guia.fecha_novedad
 )
 
-fun DBGuia.map() = Guia(
+fun DBGuia.map(unidades: List<Unidad>) = Guia(
     destinatario.map(),
     estado_guia,
     fecha_envio,
     guia,
     total_unidades,
-    ubicacion_guia,
-    unidades.map { it.map() },
+    ubicacion_lat,
+    ubicacion_lng,
+    unidades,
     novedad,
     fecha_novedad
 )

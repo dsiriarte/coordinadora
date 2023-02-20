@@ -1,9 +1,9 @@
 # Coordinadora
 
 ## Arquitectura:
-Implemente una arquitectura limpia basado en el Libro de Robert C Martin, donde se mantienen aisladas las capas para una mejor escalabilidad del codigo.
-Aplique los principios S.O.L.I.D para mantener la eficiencia y escalabilidad el proyecto
-MVVM para la capa de presentacion
+- Implemente una arquitectura limpia basado en el Libro de Robert C Martin, donde se mantienen aisladas las capas para una mejor escalabilidad del codigo.
+- Aplique los principios S.O.L.I.D para mantener la eficiencia y escalabilidad el proyecto
+- MVVM para la capa de presentacion
 
 [![N|Clean](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)]
 
@@ -12,10 +12,10 @@ MVVM para la capa de presentacion
 Se encuentra en el directorio raiz coordinadora-app.apk
 
 # Tecnogologias y herramientas:
-HILT: Para injeccion de dependencias use 
-Retrofit: consumir la API
-Room: Base de datos local
-Compose: construccion de la UI
+- HILT: Para injeccion de dependencias use 
+- Retrofit: consumir la API
+- Room: Base de datos local
+- Compose: construccion de la UI
 
 # Videos explicacion
 

@@ -3,4 +3,10 @@
 
 
     <string name="placeholder_search">Ingrese su cedula</string>
+    <string name="titulo">Tracking de Envio</string>
+    <string name="instrucciones">Escriba su numero de cedula para buscar sus guias asociadas.</string>
+    <string name="envios_encontrados">Envios encontrados</string>
+    <string name="guia_de_rastreo">Guía de rastreo</string>
+    <string name="destinatario">Destinatario</string>
+    <string name="buscar_envios">Buscar envios</string>
 </resources>

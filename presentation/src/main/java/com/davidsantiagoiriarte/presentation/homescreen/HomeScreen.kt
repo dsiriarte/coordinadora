@@ -1,5 +1,6 @@
 package com.davidsantiagoiriarte.presentation.homescreen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -49,12 +51,18 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 @Composable
 fun Header() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Icon(
-            painter = painterResource(id = R.drawable.logo_coordinadora),
-            contentDescription = null
-        )
+        Card(elevation = 4.dp, modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()) {
+            Image(
+                painter = painterResource(id = R.drawable.logo_coordinadora),
+                contentDescription = null,
+                contentScale = ContentScale.Inside,
+                modifier = Modifier.padding(4.dp)
+            )
+        }
         Text(
-            text = "Tracking de Envio",
+            text = stringResource(id = R.string.titulo),
             style = MaterialTheme.typography.h5,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,
@@ -62,7 +70,7 @@ fun Header() {
             modifier = Modifier.padding(16.dp)
         )
         Text(
-            text = "Escriba su numero de cedula para buscar sus guias asociadas.",
+            text = stringResource(id = R.string.instrucciones),
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(16.dp)
         )
@@ -73,12 +81,13 @@ fun Header() {
 fun BarraFiltros(enviosEncontrados: Int, onSortClicked: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
     ) {
         Text(
-            text = "Envios encontrados ($enviosEncontrados)",
+            text = "${stringResource(id = R.string.envios_encontrados)} ($enviosEncontrados)",
             textAlign = TextAlign.Start,
         )
         Row() {
@@ -103,7 +112,7 @@ fun SearchBar(
     val keyboardController = LocalSoftwareKeyboardController.current
     Column {
         Text(
-            text = "Buscar envios",
+            text = stringResource(id = R.string.buscar_envios),
             style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Start,
             modifier = Modifier.padding(16.dp)
@@ -206,7 +215,7 @@ fun Item(guia: ViewGuia) {
                 }
                 Column {
                     Text(
-                        text = "Guia de rastreo",
+                        text = stringResource(id = R.string.guia_de_rastreo),
                         modifier = Modifier.padding(start = 16.dp)
                     )
                     Text(
@@ -224,7 +233,7 @@ fun Item(guia: ViewGuia) {
                 .fillMaxWidth()
         ) {
             Text(
-                text = "Destinatario:",
+                text = stringResource(id = R.string.destinatario),
                 modifier = Modifier.padding(start = 16.dp)
             )
             Text(

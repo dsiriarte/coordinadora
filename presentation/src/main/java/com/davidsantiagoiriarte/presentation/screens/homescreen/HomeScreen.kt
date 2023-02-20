@@ -35,6 +35,7 @@ import com.davidsantiagoiriarte.presentation.model.ViewGuia
 import com.davidsantiagoiriarte.presentation.navigation.Screen
 import com.davidsantiagoiriarte.presentation.screens.CoordinadoraTopHeader
 import com.davidsantiagoiriarte.presentation.screens.ErrorMessage
+import com.davidsantiagoiriarte.presentation.screens.NoInternetComponent
 import com.davidsantiagoiriarte.presentation.ui.theme.*
 
 @Composable
@@ -42,12 +43,17 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
     val guias by viewModel.guias.collectAsState()
     val mostrarMensajeError by viewModel.mostrarError.collectAsState()
     val mensajeError by viewModel.mensajeError.collectAsState()
+    val noInternetFlag by viewModel.noInternetFlag.collectAsState()
+
     if (mostrarMensajeError) {
         ErrorMessage(errorMessage = mensajeError) {
             viewModel.mostrarError.value = false
         }
     }
     Column {
+        if (noInternetFlag) {
+            NoInternetComponent()
+        }
         Header()
         Column {
             SearchBar() {

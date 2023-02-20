@@ -21,6 +21,7 @@ import com.davidsantiagoiriarte.domain.model.Destinatario
 import com.davidsantiagoiriarte.domain.model.Unidad
 import com.davidsantiagoiriarte.presentation.model.ViewGuia
 import com.davidsantiagoiriarte.presentation.screens.CoordinadoraTopHeader
+import com.davidsantiagoiriarte.presentation.screens.NoInternetComponent
 import com.davidsantiagoiriarte.presentation.ui.theme.fechaBackground
 import com.davidsantiagoiriarte.presentation.ui.theme.itemBackground
 
@@ -31,9 +32,14 @@ fun GuiaScreen(
     viewModel: GuiaViewModel = hiltViewModel()
 ) {
     val guia by viewModel.guia.collectAsState()
+    val noInternetFlag by viewModel.noInternetFlag.collectAsState()
+
     numeroGuia?.let { viewModel.cargarGuia(it) }
     guia?.let { guia ->
         Column(modifier = Modifier.fillMaxSize()) {
+            if (noInternetFlag) {
+                NoInternetComponent()
+            }
             CoordinadoraTopHeader(true, {
                 navController.popBackStack()
             })

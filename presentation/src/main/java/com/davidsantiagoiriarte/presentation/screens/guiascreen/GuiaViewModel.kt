@@ -20,10 +20,17 @@ class GuiaViewModel @Inject constructor(private val buscarGuiaUseCase: SuspendUs
     private var _guia = MutableStateFlow<ViewGuia?>(null)
     val guia: StateFlow<ViewGuia?> = _guia.asStateFlow()
 
+    var noInternetFlag = MutableStateFlow(false)
+
     fun cargarGuia(numeroGuia: String) {
         viewModelScope.launch {
-            val guia = buscarGuiaUseCase.execute(numeroGuia).map()
-            _guia.value = guia
+            try {
+                val guia = buscarGuiaUseCase.execute(numeroGuia).map()
+                _guia.value = guia
+                noInternetFlag.value = false
+            } catch (ex: Exception) {
+                noInternetFlag.value = true
+            }
         }
     }
 }

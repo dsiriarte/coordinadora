@@ -26,6 +26,7 @@ class HomeViewModel @Inject constructor(
     var mostrarError = MutableStateFlow(false)
     var mensajeError = MutableStateFlow("")
 
+    var noInternetFlag = MutableStateFlow(false)
 
     init {
         sincronizar()
@@ -33,7 +34,12 @@ class HomeViewModel @Inject constructor(
 
     private fun sincronizar() {
         viewModelScope.launch {
-            sincronizarGuiasUseCase.execute(Unit)
+            try {
+                sincronizarGuiasUseCase.execute(Unit)
+                noInternetFlag.value = false
+            } catch (ex: Exception) {
+                noInternetFlag.value = true
+            }
         }
     }
 

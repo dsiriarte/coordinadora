@@ -1,5 +1,6 @@
 package com.davidsantiagoiriarte.presentation.screens.guiascreen
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -19,11 +21,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.davidsantiagoiriarte.domain.model.Destinatario
 import com.davidsantiagoiriarte.domain.model.Unidad
+import com.davidsantiagoiriarte.domain.model.Zonificacion
 import com.davidsantiagoiriarte.presentation.model.ViewGuia
 import com.davidsantiagoiriarte.presentation.screens.CoordinadoraTopHeader
 import com.davidsantiagoiriarte.presentation.screens.NoInternetComponent
+import com.davidsantiagoiriarte.presentation.screens.map.MARCADOR1_EXTRA_NAME
+import com.davidsantiagoiriarte.presentation.screens.map.MARCADOR2_EXTRA_NAME
+import com.davidsantiagoiriarte.presentation.screens.map.MapActivity
+import com.davidsantiagoiriarte.presentation.screens.map.marcador.Marcador
+import com.davidsantiagoiriarte.presentation.screens.map.marcador.MarcadorExtra
 import com.davidsantiagoiriarte.presentation.ui.theme.fechaBackground
 import com.davidsantiagoiriarte.presentation.ui.theme.itemBackground
+import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun GuiaScreen(
@@ -82,9 +91,40 @@ fun GuiaScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp)
             ) {
-                if (guia.ubicacionGuiaLat != null && guia.ubicacionGuiaLng != null) {
+                if (tieneUbicacionGuia(guia) || tieneUbicacionDestinatario(guia.destinatario.zonificacion)) {
+                    val context = LocalContext.current
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            context.startActivity(
+                                Intent(
+                                    context,
+                                    MapActivity::class.java
+                                ).apply {
+                                    if (tieneUbicacionGuia(guia)) {
+                                        putExtra(
+                                            MARCADOR1_EXTRA_NAME, MarcadorExtra(
+                                                guia.estadoGuia,
+                                                guia.ubicacionGuiaLat!!,
+                                                guia.ubicacionGuiaLng!!,
+                                                "",
+                                                false
+                                            )
+                                        )
+                                    }
+                                    val destinatario = guia.destinatario
+                                    if (tieneUbicacionDestinatario(destinatario.zonificacion)) {
+                                        putExtra(
+                                            MARCADOR2_EXTRA_NAME, MarcadorExtra(
+                                                destinatario.nombre,
+                                                destinatario.zonificacion.lat!!,
+                                                destinatario.zonificacion.lng!!,
+                                                destinatario.zonificacion.direccion,
+                                                true
+                                            )
+                                        )
+                                    }
+                                })
+                        },
                         shape = RoundedCornerShape(50)
                     ) {
                         Text(text = "Abrir Mapa de ubicación", modifier = Modifier.padding(8.dp))
@@ -94,6 +134,13 @@ fun GuiaScreen(
         }
     }
 }
+
+private fun tieneUbicacionGuia(guia: ViewGuia) =
+    guia.ubicacionGuiaLat != null && guia.ubicacionGuiaLng != null && guia.ubicacionGuiaLng != 0.0 && guia.ubicacionGuiaLat != 0.0
+
+private fun tieneUbicacionDestinatario(zonificacion: Zonificacion) =
+    zonificacion.lat != null && zonificacion.lng != null && zonificacion.lat != 0.0 && zonificacion.lng != 0.0
+
 
 @Composable
 fun Estado(guia: ViewGuia, modifier: Modifier = Modifier) {

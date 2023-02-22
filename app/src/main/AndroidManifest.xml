@@ -16,18 +16,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coordinadora"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA_ZIz5Tr7nvE1--FYtleoUsDAHDKh-Wtg" />
+
         <activity
             android:name="com.davidsantiagoiriarte.presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Coordinadora">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.davidsantiagoiriarte.presentation.screens.map.MapActivity"
+            android:exported="true"
+            android:parentActivityName="com.davidsantiagoiriarte.presentation.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light" />
     </application>
 
 </manifest>

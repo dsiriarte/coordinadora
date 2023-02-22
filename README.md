@@ -28,4 +28,5 @@ Se encuentra en el directorio raiz coordinadora-app.apk
 - Hice unos pocos tests para demostrar como los realizo, pero no lo hice para todas las clases (como se debe en un proyecto real) por cuestiones de tiempo y priorizando el funcionamiento mas importante
 - Quise arriesgarme a usar compose para la UI aunque me tomara algo mas de tiempo, pero creo que fue buen resultado y mejora el performance
 - bloquee la pantalla a portrait, igualmente por cuestiones de tiempo, ya que para que funcione en modo landscape hay que diseñar la pantalla
-- Por cuestiones de tiempo no realice la opcion de los mapas, sin embargo se como hacerlo y trabajare por mi cuenta en la parte que me falto completar en un nuevo branch, si al momento de revisar ya esta el otro branch podria darle un vistazo (No espero que se considere dentro del reto)
+- ~~Por cuestiones de tiempo no realice la opcion de los mapas, sin embargo se como hacerlo y trabajare por mi cuenta en la parte que me falto completar en un nuevo branch, si al momento de revisar ya esta el otro branch podria darle un vistazo (No espero que se considere dentro del reto)~~
+- en el Branch maps esta la funcion de mapas habilitada
